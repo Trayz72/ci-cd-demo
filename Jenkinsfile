@@ -58,7 +58,7 @@ pipeline {
             sh 'docker system prune -f || true'
         }
         success {
-            echo "✅ Pipeline Success: Image $IMAGE_NAME:$IMAGE_TAG is live on Docker Hub!"
+            echo "Pipeline Success: Image $IMAGE_NAME:$IMAGE_TAG is live on Docker Hub!"
         }
     }
 }
