@@ -8,12 +8,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Source') {
-            steps {
-                
-                checkout scm
-            }
-        }
 
         stage('Build Test Image') {
             steps {
@@ -39,7 +33,7 @@ pipeline {
             }
         }
 
-        stage('Docker Hub Auth & Push') {
+        stage('Push to Docker Hub') {
             steps {
                 
                 withCredentials([usernamePassword(
