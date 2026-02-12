@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 RUN pip install --no-cache-dir -r requirements.txt pytest selenium
 COPY . .
+CMD python app.py & sleep 3 && pytest tests/
 
 FROM python:3.9-slim AS runtime
 WORKDIR /app

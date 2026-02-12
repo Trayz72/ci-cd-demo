@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo "Executing Selenium tests inside the container environment..."
                 
-                sh "docker run --rm $TEST_IMAGE pytest tests/"
+                sh "docker run --rm $TEST_IMAGE "
             }
         }
 
