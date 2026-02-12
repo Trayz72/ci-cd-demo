@@ -1,29 +1,35 @@
+import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
-import time
+from webdriver_manager.chrome import ChromeDriverManager
 
-print("Starting Selenium Demo")
 
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service)
+@pytest.fixture
+def driver():
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
-driver.get("http://127.0.0.1:5050")
-time.sleep(2)
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
 
-driver.find_element(By.NAME, "username").send_keys("admin")
-time.sleep(1)
-driver.find_element(By.NAME, "password").send_keys("secret")
-time.sleep(1)
-driver.find_element(By.NAME, "password").send_keys(Keys.RETURN)
-time.sleep(3)
+    yield driver
+    driver.quit()
 
-if "Login successful!" in driver.page_source:
+
+def test_login(driver):
+    print("Starting Selenium Demo")
+
+    driver.get("http://127.0.0.1:5050")
+
+    driver.find_element(By.NAME, "username").send_keys("admin")
+    driver.find_element(By.NAME, "password").send_keys("secret")
+    driver.find_element(By.NAME, "password").send_keys(Keys.RETURN)
+
+    assert "Login successful!" in driver.page_source
+
     print("Test Passed!")
-else:
-    print("Test Failed")
-
-driver.quit()
-print("Demo Complete!")
+    print("Demo Complete!")
